@@ -8,7 +8,7 @@ import cgitb
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QApplication
 from PyQt5.QtGui import QPixmap, QImage, QRegExpValidator
-from PyQt5.QtCore import Qt, QRegExp
+from PyQt5.QtCore import Qt, QRegExp, QSize
 import cv2
 import numpy as np
 from glob import glob
@@ -93,16 +93,18 @@ class IdentifyPage(QtWidgets.QMainWindow, ui_identify_page):
         my_app.show()
 
     # 将cv2读取到的图片(numpy格式)转换成QPixmap格式，并显示到页面
-    def show_picture(self, jpg_numpy):
-        if jpg_numpy is None:
+    def show_picture(self, jpg_path):
+        if jpg_path is None:
             self.pic_label.setPixmap(QPixmap(""))
             return
-        ratio = np.array([jpg_numpy.shape[1]/600, jpg_numpy.shape[0]/400])
+        img = QImage(jpg_path)
+        ratio = np.array([img.height()/600, img.width()/400])
         max_ratio = ratio.max()
-        jpg_numpy = cv2.resize(jpg_numpy, (int(jpg_numpy.shape[1]/max_ratio), int(jpg_numpy.shape[0]/max_ratio)), interpolation=cv2.INTER_LINEAR)
-        jpg = cv2.cvtColor(jpg_numpy, cv2.COLOR_BGR2RGB)
-        jpg = QImage(jpg.data, jpg.shape[1], jpg.shape[0], QImage.Format_RGB888)
-        jpg = QPixmap(QPixmap.fromImage(jpg))
+        mgnWidth = int(img.height() / max_ratio)
+        mgnHeight = int(img.width() / max_ratio)
+        size = QSize(mgnWidth, mgnHeight)
+        jpg = QPixmap.fromImage(img.scaled(size, Qt.IgnoreAspectRatio))
+        self.pic_label.resize(mgnWidth, mgnHeight)
         self.pic_label.setPixmap(jpg)
 
     # 初始化展示
@@ -127,7 +129,6 @@ class IdentifyPage(QtWidgets.QMainWindow, ui_identify_page):
     # 根据所给索引，将图片和标签展示出来
     def show_message(self):
         jpg_path = self.jpg_path_list[self.index]
-        img = cv2.imread(jpg_path)
         name = os.path.basename(jpg_path)
         if name not in self.labels.index:
             label = ""
@@ -135,7 +136,7 @@ class IdentifyPage(QtWidgets.QMainWindow, ui_identify_page):
         else:
             label = self.labels.loc[name][1]
         self.rc_name.setText(name)
-        self.show_picture(img)
+        self.show_picture(jpg_path)
         self.rc_label.setText(label)
         self.rc_label.selectAll()
         remain_num = len(self.jpg_path_list) - self.index - 1
