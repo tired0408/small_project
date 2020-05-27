@@ -13,6 +13,10 @@ import cv2
 import struct
 
 def normal():
+    """
+    时间处理、字节处理、排序、指定GPU使用等。
+    :return:
+    """
     # try:
     #     raise Exception("自定义错误异常")
     # except Exception as e:
@@ -53,19 +57,6 @@ def normal():
     set(a).intersection(set(b)) # 求交集
     set(a).difference(set(b)) # 求差集，a中有，b中没有的
     dict.get("abc", 0)  # 如果字典中无"abc"键，则返回0
-def singleton(cls):
-    """
-    装饰器实现单例模式
-    :param cls: 实例：方法或者类
-    :return:
-    """
-    instances = {}
-
-    def get_instance(*args, **kwargs):
-        if cls not in instances:
-            instances[cls] = cls(*args, **kwargs)
-        return instances[cls]
-    return get_instance
 
 def use_matlab():
     """
@@ -155,50 +146,6 @@ def data_to_csv():
     # 根据条件筛选数据
     df = df[~df[3].isin([-1])]
     df = df[~df[5].str.contains(",", regex=True)]  #  令regex=True，则为正则表达式
-
-def the_iterator():
-    """
-    迭代器
-    :return:
-    """
-    def readInChunks(fileObj, chunkSize=1024*1024*100):
-        while 1:
-            data = fileObj.readlines(chunkSize)
-            if not data:
-                break
-            yield "".join(data)
-    def cut_file(path):
-        f = open(path)
-        export_path = "./data/totalExposureLog/"
-        if os.path.exists(export_path):
-            shutil.rmtree(export_path)
-        os.mkdir(export_path)
-        for chuck in readInChunks(f):
-            wrfile=open(export_path+"totalExposureLog_"+str(i)+".out",'w')
-            wrfile.write(chuck)
-            wrfile.close()
-        f.close()
-
-import cx_Oracle
-def use_oracle():
-    """
-    操作oracle数据库的相关方法
-    :return:
-    """
-    # 连接数据库，path格式[用户名]/[密码]@[host]:[port]/[SERVICE_NAME]
-    path = "ideal/ideal@192.101.109.110:1521/orcl"
-    db = cx_Oracle.connect(path)
-    # 获取指针
-    cursor = db.cursor()
-    # 执行语句
-    cursor.execute("""
-            select * from hujt_test 
-            """)
-    # 获取全部数据
-    all_data = cursor.fetchall()
-    # 逐条获取数据
-    one_data = cursor.fetchone()
-    db.close()
 
 import numpy as np
 def numpy_method():
@@ -429,17 +376,4 @@ def opencv_note():
         if event == cv2.EVENT_LBUTTONDOWN:
             print((x, y))
     cv2.setMouseCallback("images", on_Mouse, param=None)  # 为窗口添加鼠标的响应[窗口名；回调函数；传递回调函数的参数]
-
-
-def learn_pytorch():
-    """
-    pytorch学习
-    :return:
-    """
-    a = torch.arange(0, 6)
-    # 在第二维增加一个维度，起始0
-    a.unsqueeze(1)
-    # 倒一维如果维度只有1的话，那么将其去掉。
-    a.squeeze(-1)
-    pass
 
