@@ -42,18 +42,25 @@ def the_iterator():
             if not data:
                 break
             yield "".join(data)
-    def cut_file(path):
-        f = open(path)
-        export_path = "./data/totalExposureLog/"
-        if os.path.exists(export_path):
-            shutil.rmtree(export_path)
-        os.mkdir(export_path)
-        for chuck in readInChunks(f):
-            wrfile=open(export_path+"totalExposureLog_"+str(i)+".out",'w')
-            wrfile.write(chuck)
-            wrfile.close()
-        f.close()
 
+    def cut_file(path):
+        """
+        将大文件切割成多个小文件
+        :param path:
+        :return:
+        """
+        with open(path) as f:
+            export_path = "./data/totalExposureLog/"
+            if os.path.exists(export_path):
+                shutil.rmtree(export_path)
+            os.mkdir(export_path)
+            i = 0
+            for chuck in readInChunks(f):
+                i += 1
+                wrfile=open(export_path+"totalExposureLog_"+str(i)+".out",'w')
+                wrfile.write(chuck)
+                wrfile.close()
+    cut_file("xxxxxxxxxxxxx")
 import cx_Oracle
 def use_oracle():
     """
@@ -88,3 +95,4 @@ def singleton(cls):
             instances[cls] = cls(*args, **kwargs)
         return instances[cls]
     return get_instance
+

@@ -106,9 +106,9 @@ def use_matlab():
         plt.show()
     draw_rectangle()
 
-def data_to_csv():
+def pandas_method():
     """
-    导出csv、excel文件
+    pandas的使用方法，导出csv、excel文件
     :return:
     """
     columns = ['size', 'age', 'height']  # 文件标题
@@ -212,7 +212,6 @@ def regular_expression():
         print("matchObj.group(1) : ", matchObj.group(1))
     else:
         print("No match!!")
-
 
 def opencv_note():
     """
@@ -376,4 +375,3 @@ def opencv_note():
         if event == cv2.EVENT_LBUTTONDOWN:
             print((x, y))
     cv2.setMouseCallback("images", on_Mouse, param=None)  # 为窗口添加鼠标的响应[窗口名；回调函数；传递回调函数的参数]
-

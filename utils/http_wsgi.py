@@ -3,19 +3,24 @@ import urllib.parse
 from html import escape
 import json
 import threading
-class HttpServer(object):
+import requests
+import traceback
 
+class HttpServer(object):
     def __init__(self):
         # 创建server实例
         # host写成0.0.0.0的话，其他人可以访问，代表监听多块网卡，127.0.0.1表示监听本地, port可以指定端口
         self.my_server = make_server(host='0.0.0.0', port=5902, app=self.app)
 
-    def run(self):
+    def server_run(self):
+        """
+        服务端，
+        :return:
+        """
         # 启动server监听，监听http请求
         print("Serving HTTP on port 5902...")
         t = threading.Thread(target=self.my_server.serve_forever)
         t.start()
-
 
     def app(self, environ, start_response):
         """
@@ -74,31 +79,34 @@ class HttpServer(object):
                 json.loads(request_body)
             return return_data
 
-def send_http():
-    import requests
-    import traceback
-    data_dict = {
-        "GateAct": {
-            "container_detection_sys": "container_info"
-        },
-        "AdditionalInfo": {
-            "area_no": "1",
-            "lane": "1",
-            "timestamp": "146868630098"
+    @staticmethod
+    def client_send():
+        """
+        HTTP客户端，向服务端发送请求
+        :return:
+        """
+        data_dict = {
+            "GateAct": {
+                "container_detection_sys": "container_info"
+            },
+            "AdditionalInfo": {
+                "area_no": "1",
+                "lane": "1",
+                "timestamp": "146868630098"
+            }
         }
-    }
-    # data_dict = {
-    #         "area_no": "1",
-    #         "lane": "1",
-    #         "timestamp": "146868630098"
-    #     }
-    url = r"http://172.16.115.18:15902/xxxx"
-    try:
-        headers = {'content-type': 'application/json'}
-        res = requests.post(url, data=data_dict, headers=headers)
-        print(res.text)
-    except:
-        print(traceback.format_exc())
+        # data_dict = {
+        #         "area_no": "1",
+        #         "lane": "1",
+        #         "timestamp": "146868630098"
+        #     }
+        url = r"http://172.16.115.18:15902/xxxx"
+        try:
+            headers = {'content-type': 'application/json'}
+            res = requests.post(url, data=data_dict, headers=headers)
+            print(res.text)
+        except:
+            print(traceback.format_exc())
 if __name__ == '__main__':
     http_server = HttpServer()
-    http_server.run()
+    http_server.server_run()
