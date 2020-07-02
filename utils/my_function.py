@@ -9,15 +9,25 @@ def restart_program():
     防止：程序出现错误时候，或误点击Ctrl+C导致的错误退出
     :return:
     """
+    # psutil是个跨平台库，能够轻松实现获取系统运行的进程和系统利用率，包括CPU、内存、磁盘、网络等信息。
     def restart():
+        # 关闭当前进程
         try:
-            p = psutil.Process(os.getpid())
-            print(os.getpid())
+            # 获取当前程序的PID
+            pid = os.getpid()
+            # 获取当前程序的进程
+            p = psutil.Process(pid)
+            # p.open_files()进程打开的文件列表
+            # p.connections()进程打开的套接字连接
             for handler in p.open_files() + p.connections():
+                # fd文件或套接字描述编号
                 os.close(handler.fd)
         except Exception as e:
             print(e)
-        python = sys.executable
+        # 重启该进程
+        python = sys.executable  # 获取python.exe的文件地址
+        # os.execl用新的程序替换当前子进程的进程空间，而该子进程从新程序的main函数开始执行
+        # sys.argv(type:list)为程序执行的py文件地址列表
         os.execl(python, python, *sys.argv)
     i = 1
     try:
