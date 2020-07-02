@@ -5,8 +5,6 @@ from keras.layers import Input, Dense, Activation, ZeroPadding2D, BatchNormaliza
 from keras.layers import AveragePooling2D, MaxPooling2D, Dropout, GlobalMaxPooling2D, GlobalAveragePooling2D
 from keras.models import Model
 from keras.preprocessing import image
-from keras.utils import layer_utils
-from keras.utils.data_utils import get_file
 from keras.applications.imagenet_utils import preprocess_input
 import pydot
 from IPython.display import SVG
