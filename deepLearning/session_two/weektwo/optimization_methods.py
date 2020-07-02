@@ -13,7 +13,6 @@ from deepLearning.session_two.weektwo.data.testCases import *
 plt.rcParams['figure.figsize'] = (7.0, 4.0) # set default size of plots
 plt.rcParams['image.interpolation'] = 'nearest'
 plt.rcParams['image.cmap'] = 'gray'
-
 # GRADED FUNCTION: update_parameters_with_gd
 def update_parameters_with_gd(parameters, grads, learning_rate):
     """
