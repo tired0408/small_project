@@ -8,7 +8,6 @@ from face_recoge import forward
 import cv2
 import os
 
-
 cgitb.enable(format="text")  # 解决pyqt异常，程序就崩溃，而没有任何提示的问题
 
 ui_main_window, _ = uic.loadUiType("./main.ui")  # 加载主页面的样式
