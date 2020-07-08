@@ -27,7 +27,9 @@ def problem2():
     class A:
         def __init__(self):
             print("init")
-            self.bgr_image = cv2.imread("test.jpg")  # windows减少，linux不减少
+            # windows减少，linux不减少
+            # linux不减少可能为，linux判断后续还要用到内存，将该释放的内存转移过去
+            self.bgr_image = cv2.imread("test.jpg")
             # self.bgr_image = np.zeros((1920,1080,3), dtype=np.uint8) # windows、linux减少,
             self.history_video = [self.bgr_image.copy() for i in range(250)]
 
