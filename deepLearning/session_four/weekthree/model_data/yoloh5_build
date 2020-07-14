@@ -1,0 +1,5 @@
+1、wget http://pjreddie.com/media/files/yolo.weights
+2、下载https://github.com/pjreddie/darknet/blob/master/cfg/yolov2.cfg文件，并将yolov2.cfg名称改为yolo.cfg
+3、git clone https://github.com/allanzelener/yad2k.git
+4、cd yad2k
+5、./yad2k.py yolo.cfg yolo.weights yolo.h5
