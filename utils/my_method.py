@@ -36,8 +36,6 @@ def normal():
     sort_list = sorted(homework_value.items(), key=lambda x: x[1][1], reverse=True)
     # 获取文件夹下所有文件名
     os.listdir("../")
-    # 指定使用哪个GPU
-    os.environ["CUDA_VISIBLE_DEVICES"] = "2"
     # 编解码
     # 0x2211） 使用两个字节储存，高位字节是0x22，低位字节是0x11,人类读取为大端字节序，\x22\x11
     # 计算机电路先处理靠前的（较低的存储器地址），效率比较高，所以机器存储方式为，小端字节序，\x11\x22
@@ -57,6 +55,14 @@ def normal():
     set(a).intersection(set(b)) # 求交集
     set(a).difference(set(b)) # 求差集，a中有，b中没有的
     dict.get("abc", 0)  # 如果字典中无"abc"键，则返回0
+    #######################
+    ####### GPU相关
+    #######################
+    os.environ["CUDA_VISIBLE_DEVICES"] = "2" # 指定使用哪个GPU
+    import GPUtil  # pip install gputil
+    GPUs = GPUtil.getGPUs()
+    GPUs[0].load  # 0卡的使用率
+    GPUs[0].memoryUsed  # 使用的内存
 
 def use_matlab():
     """
@@ -158,7 +164,7 @@ def numpy_method():
     # 从给定的一维数组中产生一个随机样本
     # a：1维数组。如果是整数，随机样本来自np.arange(a)
     # size：输出个数，如果是元组(m, n, k)，则m*n*k个样本生成。
-    # replace：输出的数能否重复，Fale表示不能重复
+    # replace：输出的数能否重复，False表示不能重复
     # p：输入a中每个数的输出概率。
     np.random.choice(a=5, size=2, replace=False, p=None)
     # 将多维数组降位一维
@@ -238,6 +244,7 @@ def opencv_note():
     cv2.destroyWindow("image")
     # 读取视频，进行灰度处理和垂直翻转后保存。
     cap = cv2.VideoCapture("E:\py-workspace\\test.avi")  # 读取视频, 0则读取本地内置摄像头
+    cap.release()
     fourcc = cv2.VideoWriter_fourcc(*'DIVX')  # 编码器，DIVX是Windows系统的常用格式
     fps = cap.get(cv2.CAP_PROP_FPS)  # 获取原始视频的频帧
     # 获取原始视频的宽和高
@@ -245,6 +252,7 @@ def opencv_note():
             int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
     # 创建VideoWriter的对象，[输出名，编码器，频帧，大小，True彩色False灰色]
     out = cv2.VideoWriter('output.avi', fourcc, fps, size, False)
+    out.release()
     # 设置视频的起始帧
     cap.set(cv2.CAP_PROP_POS_FRAMES, 2000)
     while cap.isOpened():  # 是否读取到
@@ -262,7 +270,7 @@ def opencv_note():
                 break
         else:
             break
-    out.release()
+
     # 绘制不同几何图形，直线，矩形，圆，三角形，椭圆，多边形，添加文字
     # 绘制直线，[图像；起点；终点；颜色；粗细；类型]
     cv2.line(img, (0, 0), (511, 511), (255, 0, 0), 5)
@@ -278,8 +286,7 @@ def opencv_note():
     cv2.polylines(img, [pts], True, (0, 255, 255))
     # 添加文字[图片；文字内容；位置；字体类型；字体大小；颜色；粗细；线条类型]
     cv2.putText(img, 'OpenCV', (10, 500), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), thickness=2, lineType=cv2.LINE_AA)
-    cap.release()  # 释放cap
-    out.release()
+
     # 读取写入XML,YML,JSON文件
     fs = cv2.FileStorage("abc.xml", cv2.FileStorage_READ) # filestorage_read读取，写入filestorage_wirte
     fs.write("mat1", np.random.randint(0, 255, [2, 2]))
