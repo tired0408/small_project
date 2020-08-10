@@ -1,4 +1,4 @@
-# 参考地址：https://blog.csdn.net/junjun_zhao/article/details/79281288
+# # 参考地址：https://blog.csdn.net/junjun_zhao/article/details/79281288
 import argparse
 import os
 import keras
@@ -17,7 +17,9 @@ from keras.layers import Input, Lambda, Conv2D
 from keras.models import load_model, Model
 from deepLearning.session_four.weekthree.yolo_utils import read_classes, read_anchors, generate_colors, preprocess_image, draw_boxes, scale_boxes
 from deepLearning.session_four.weekthree.yad2k.models.keras_yolo import yolo_head, yolo_boxes_to_corners, preprocess_true_boxes, yolo_loss, yolo_body
-
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+config = tf.ConfigProto()
+config.gpu_options.allow_growth=True
 def yolo_filter_boxes(box_confidence, boxes, box_class_probs, threshold=.6):
     """Filters YOLO boxes by thresholding on object and class confidence.
     Arguments:
@@ -55,8 +57,7 @@ def yolo_filter_boxes(box_confidence, boxes, box_class_probs, threshold=.6):
     classes = tf.boolean_mask(box_classes, filtering_mask)
     ### END CODE HERE ###
     return scores, boxes, classes
-
-with tf.Session() as test_a:
+with tf.Session(config=config) as test_a:
     box_confidence = tf.random_normal([19, 19, 5, 1], mean=1, stddev=4, seed = 1)
     boxes = tf.random_normal([19, 19, 5, 4], mean=1, stddev=4, seed = 1)
     box_class_probs = tf.random_normal([19, 19, 5, 80], mean=1, stddev=4, seed = 1)
@@ -130,7 +131,7 @@ def yolo_non_max_suppression(scores, boxes, classes, max_boxes = 10, iou_thresho
     classes = K.gather(classes, nms_indices)
     ### END CODE HERE ###
     return scores, boxes, classes
-with tf.Session() as test_b:
+with tf.Session(config=config) as test_b:
     scores = tf.random_normal([54,], mean=1, stddev=4, seed = 1)
     boxes = tf.random_normal([54, 4], mean=1, stddev=4, seed = 1)
     classes = tf.random_normal([54,], mean=1, stddev=4, seed = 1)
@@ -174,7 +175,7 @@ def yolo_eval(yolo_outputs, image_shape = (720., 1280.), max_boxes=10, score_thr
     scores, boxes, classes = yolo_non_max_suppression(scores, boxes, classes, max_boxes = 10, iou_threshold = .5)
     ### END CODE HERE ###
     return scores, boxes, classes
-with tf.Session() as test_b:
+with tf.Session(config=config) as test_b:
     yolo_outputs = (tf.random_normal([19, 19, 5, 1], mean=1, stddev=4, seed = 1),
                     tf.random_normal([19, 19, 5, 2], mean=1, stddev=4, seed = 1),
                     tf.random_normal([19, 19, 5, 2], mean=1, stddev=4, seed = 1),
@@ -186,7 +187,7 @@ with tf.Session() as test_b:
     print("scores.shape = " + str(scores.eval().shape))
     print("boxes.shape = " + str(boxes.eval().shape))
     print("classes.shape = " + str(classes.eval().shape))
-print("*"*100)
+# print("*"*100)
 def predict(sess, image_file):
     """
     Runs the graph stored in "sess" to predict boxes for "image_file". Prints and plots the preditions.
@@ -218,8 +219,6 @@ def predict(sess, image_file):
     # output_image = scipy.misc.imread(os.path.join("out", image_file))
     # imshow(output_image)
     return out_scores, out_boxes, out_classes
-config = tf.ConfigProto()
-config.gpu_options.allow_growth=True
 sess = tf.Session(config=config)
 K.set_session(sess)
 sess = K.get_session()
