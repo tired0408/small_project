@@ -1,13 +1,6 @@
 # 参考地址：https://www.cnblogs.com/jxhuang/p/8032245.html，https://blog.csdn.net/qq_31347869/article/details/88601098
-import time
-import numpy as np
-import h5py
-import matplotlib.pyplot as plt
-import scipy
-from PIL import Image
-from scipy import ndimage
-from deepLearning.session_one.data.dnn_app_utils_v2 import *
-from deepLearning.session_one.building_your_deep_neural_network import initialize_parameters, linear_activation_forward, compute_cost, linear_activation_backward, update_parameters
+from deepLearning.session_one.week_four.utils.dnn_app_utils_v2 import *
+from deepLearning.session_one.week_four.building_your_deep_neural_network import compute_cost, update_parameters
 
 plt.rcParams['figure.figsize'] = (5.0, 4.0) # set default size of plots
 plt.rcParams['image.interpolation'] = 'nearest'
@@ -151,7 +144,7 @@ print("-"*100)
 # print("-"*100)
 
 ### CONSTANTS ###
-from deepLearning.session_one.building_your_deep_neural_network import initialize_parameters_deep, L_model_forward, L_model_backward
+from deepLearning.session_one.week_four.building_your_deep_neural_network import initialize_parameters_deep, L_model_forward, L_model_backward
 # GRADED FUNCTION: L_layer_model
 def L_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, print_cost=False):  # lr was 0.009
     """

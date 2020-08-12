@@ -1,12 +1,7 @@
 # 参考地址：https://blog.csdn.net/u011324454/article/details/78565264
 import numpy as np
 import matplotlib.pyplot as plt
-import h5py
-import scipy
-from PIL import Image
-from numpy.core._multiarray_umath import ndarray
-from scipy import ndimage
-from deepLearning.session_one.data.lr_utils import load_dataset
+from deepLearning.session_one.week_two.data.lr_utils import load_dataset
 
 # Loading the data (cat/non-cat)
 train_set_x_orig, train_set_y, test_set_x_orig, test_set_y, classes = load_dataset()

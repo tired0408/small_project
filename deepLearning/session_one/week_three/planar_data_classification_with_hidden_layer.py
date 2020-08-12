@@ -1,9 +1,9 @@
 # 参考地址：https://blog.csdn.net/qq_20039347/article/details/80244297， https://blog.csdn.net/smoggyxhdz/article/details/81627773
 
 import matplotlib.pyplot as plt
-from deepLearning.session_one.data.testCases_v2 import *
+from deepLearning.session_one.week_three.utils.testCases_v2 import *
 import sklearn.linear_model
-from deepLearning.session_one.data.planar_utils import plot_decision_boundary, sigmoid, load_planar_dataset, load_extra_datasets
+from deepLearning.session_one.week_three.utils.planar_utils import plot_decision_boundary, sigmoid, load_planar_dataset, load_extra_datasets
 
 np.random.seed(1)  # set a seed so that the results are consistent
 X, Y = load_planar_dataset()

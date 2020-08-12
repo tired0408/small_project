@@ -1,9 +1,7 @@
 # 参考地址：https://blog.csdn.net/ziqu5721/article/details/88717691，https://www.cnblogs.com/douzujun/p/10325980.html
-import numpy as np
-import h5py
 import matplotlib.pyplot as plt
-from deepLearning.session_one.data.testCases_v4 import *
-from deepLearning.session_one.data.dnn_utils_v2 import sigmoid, sigmoid_backward, relu, relu_backward
+from deepLearning.session_one.week_four.utils.testCases_v4 import *
+from deepLearning.session_one.week_four.utils.dnn_utils_v2 import sigmoid, sigmoid_backward, relu, relu_backward
 
 plt.rcParams['figure.figsize'] = (5.0, 4.0) # set default size of plots
 plt.rcParams['image.interpolation'] = 'nearest'
