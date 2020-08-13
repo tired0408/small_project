@@ -283,7 +283,8 @@ def opencv_note():
     cv2.circle(img, (447, 63), 63, (0, 0, 255), -1)
     # 绘制多边形，[图像；顶点坐标数组；是否闭合（首尾相连）；颜色]
     pts = np.array([[10, 5], [20, 30], [70, 20], [50, 10]], np.int32)
-    cv2.polylines(img, [pts], True, (0, 255, 255))
+    pts2 = np.array([[100, 50], [200, 300], [700, 200], [500, 100]], np.int32)
+    cv2.polylines(img, [pts, pts2], True, (0, 255, 255))
     # 添加文字[图片；文字内容；位置；字体类型；字体大小；颜色；粗细；线条类型]
     cv2.putText(img, 'OpenCV', (10, 500), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), thickness=2, lineType=cv2.LINE_AA)
 
