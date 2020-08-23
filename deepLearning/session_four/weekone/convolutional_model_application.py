@@ -1,15 +1,5 @@
 # 参考网址：https://blog.csdn.net/qq_21997625/article/details/80981773
-import sys
-import math
-import numpy as np
-import h5py
-import matplotlib.pyplot as plt
-import scipy
-from PIL import Image
-from scipy import ndimage
-import tensorflow as tf
-from tensorflow.python.framework import ops
-from deepLearning.session_four.weekone.cnn_utils import *
+from deepLearning.session_four.weekone.utils.cnn_utils import *
 
 np.random.seed(1)
 # Loading the data (signs)
