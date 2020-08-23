@@ -1,22 +1,12 @@
 # # 参考地址：https://blog.csdn.net/junjun_zhao/article/details/79281288
-import argparse
 import os
-import keras
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import imshow
-import scipy.io
-import scipy.misc
 import numpy as np
-import pandas as pd
-import PIL
 import tensorflow as tf
-from IPython.display import SVG
-from keras.utils.vis_utils import model_to_dot
 from keras import backend as K
-from keras.layers import Input, Lambda, Conv2D
-from keras.models import load_model, Model
-from deepLearning.session_four.weekthree.yolo_utils import read_classes, read_anchors, generate_colors, preprocess_image, draw_boxes, scale_boxes
-from deepLearning.session_four.weekthree.yad2k.models.keras_yolo import yolo_head, yolo_boxes_to_corners, preprocess_true_boxes, yolo_loss, yolo_body
+from keras.models import load_model
+from deepLearning.session_four.weekthree.utils.yolo_utils import read_classes, read_anchors, generate_colors, preprocess_image, draw_boxes, scale_boxes
+from deepLearning.session_four.weekthree.yad2k.models.keras_yolo import yolo_head, yolo_boxes_to_corners
+
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 config = tf.ConfigProto()
 config.gpu_options.allow_growth=True
