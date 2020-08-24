@@ -4,6 +4,16 @@ import time
 import os
 import psutil
 import cv2
+import queue
+# 以下代码会导致频繁调用管道，导致其他使用管道的地方，效率降低。原理未知。
+# 明显延迟出现在subprocess的pipe管道上，其他地方较不明显
+import subprocess as sp
+ffmpeg_pipe = sp.Popen("ps -ef", stdout=sp.PIPE, preexec_fn=os.setsid)
+test_queue = queue.Queue()
+while 1:
+    if test_queue.empty():
+        continue
+    test_queue.get()
 # 默认参数值在函数定义时只计算一次，这意味着修改参数的默认值将影响函数的所有后续调用。
 def problem1():
     def cache(lt=np.zeros((3, 3))):
