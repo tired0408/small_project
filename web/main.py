@@ -72,4 +72,4 @@ def get_pie_data():
 if __name__ == '__main__':
     # port可以指定端口，默认端口是5000
     # host写成0.0.0.0的话，其他人可以访问，代表监听多块网卡上面，默认是127.0.0.1
-    server.run(debug=True, port=5000, host='127.0.0.1')
+    server.run(debug=True, port=5000, host='0.0.0.0')

@@ -61,8 +61,12 @@ def normal():
     os.environ["CUDA_VISIBLE_DEVICES"] = "2" # 指定使用哪个GPU
     import GPUtil  # pip install gputil
     GPUs = GPUtil.getGPUs()
-    GPUs[0].load  # 0卡的使用率
-    GPUs[0].memoryUsed  # 使用的内存
+    print(GPUs[0].load)  # 0卡的使用率
+    print(GPUs[0].memoryUsed)  # 使用的内存
+    from onceorauto.misc.nvml import NVMLContext
+    with NVMLContext() as ctx:
+        for idx, dev in enumerate(ctx.devices()):
+            print(dev.utilization()["gpu"])
 
 def use_matlab():
     """
@@ -287,7 +291,6 @@ def opencv_note():
     cv2.polylines(img, [pts, pts2], True, (0, 255, 255))
     # 添加文字[图片；文字内容；位置；字体类型；字体大小；颜色；粗细；线条类型]
     cv2.putText(img, 'OpenCV', (10, 500), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), thickness=2, lineType=cv2.LINE_AA)
-
     # 读取写入XML,YML,JSON文件
     fs = cv2.FileStorage("abc.xml", cv2.FileStorage_READ) # filestorage_read读取，写入filestorage_wirte
     fs.write("mat1", np.random.randint(0, 255, [2, 2]))
