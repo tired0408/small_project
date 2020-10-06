@@ -1,5 +1,5 @@
-from music_utils import * 
-from preprocess import * 
+from deepLearning.session_five.weekone.utils.music_utils import *
+from deepLearning.session_five.weekone.utils.preprocess import *
 from keras.utils import to_categorical
 
 chords, abstract_grammars = get_musical_data('data/original_metheny.mid')
