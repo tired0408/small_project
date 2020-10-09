@@ -259,7 +259,7 @@ pred = model.predict(X_test_indices)
 for i in range(len(X_test)):
     x = X_test_indices
     num = np.argmax(pred[i])
-    if (num != Y_test[i]):
+    if num != Y_test[i]:
         print('Expected emoji:'+ label_to_emoji(Y_test[i]) + ' prediction: '+ X_test[i] + label_to_emoji(num).strip())
 print("*"*100)
 x_test = np.array(["not feeling happy"])
