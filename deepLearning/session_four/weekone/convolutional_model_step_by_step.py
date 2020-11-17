@@ -95,13 +95,13 @@ def conv_forward(A_prev, W, b, hparameters):
     for i in range(m):                               # loop over the batch of training examples
         a_prev_pad = A_prev_pad[i]                    # Select ith training example's padded activation
         for h in range(0,n_H):                           # loop over vertical axis of the output volume
+            # Find the corners of the current "slice" (≈4 lines)
+            vert_start = h * stride
+            vert_end = vert_start + f
             for w in range(0,n_W):                       # loop over horizontal axis of the output volume
+                horiz_start = w * stride
+                horiz_end = horiz_start + f
                 for c in range(n_C):                   # loop over channels (= #filters) of the output volume
-                    # Find the corners of the current "slice" (≈4 lines)
-                    vert_start = h * stride
-                    vert_end = vert_start + f
-                    horiz_start = w * stride
-                    horiz_end = horiz_start + f
                     # Use the corners to define the (3D) slice of a_prev_pad (See Hint above the cell). (≈1 line)
                     a_slice_prev = a_prev_pad[vert_start:vert_end,horiz_start:horiz_end,:]
                     # Convolve the (3D) slice with the correct filter W and bias b, to get back one output neuron. (≈1 line)
@@ -150,13 +150,13 @@ def pool_forward(A_prev, hparameters, mode = "max"):
     ### START CODE HERE ###
     for i in range(m):                         # loop over the training examples
         for h in range(n_H):                     # loop on the vertical axis of the output volume
+            vert_start = h * stride
+            vert_end = vert_start + f
             for w in range(n_W):                 # loop on the horizontal axis of the output volume
+                horiz_start = w * stride
+                horiz_end = horiz_start + f
                 for c in range (n_C):            # loop over the channels of the output volume
                     # Find the corners of the current "slice" (≈4 lines)
-                    vert_start = h * stride
-                    vert_end = vert_start + f
-                    horiz_start = w * stride
-                    horiz_end = horiz_start + f
                     # Use the corners to define the current slice on the ith training example of A_prev, channel c. (≈1 line)
                     a_prev_slice = A_prev[i,vert_start:vert_end,horiz_start:horiz_end,c]
                     # Compute the pooling operation on the slice. Use an if statment to differentiate the modes. Use np.max/np.mean.

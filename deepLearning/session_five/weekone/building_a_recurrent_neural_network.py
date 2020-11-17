@@ -1,5 +1,6 @@
 # 参考地址：https://blog.csdn.net/qq_25436597/article/details/79806804
 # https://cloud.tencent.com/developer/article/1437377
+# 与最新的相同答案：https://cloud.tencent.com/developer/article/1685847
 import numpy as np
 from deepLearning.session_five.weekone.utils.rnn_utils import *
 
@@ -154,20 +155,18 @@ def lstm_cell_forward(xt, a_prev, c_prev, parameters):
     n_y, n_a = Wy.shape
     ### START CODE HERE ###
     # Concatenate a_prev and xt (≈3 lines)
-    concat = np.zeros([n_a + n_x, m])
-    concat[: n_a, :] = a_prev
-    concat[n_a:, :] = xt
+    concat = np.concatenate([a_prev, xt], axis=0)
     # Compute values for ft, it, cct, c_next, ot, a_next using the formulas given figure (4) (≈6 lines)
     ft = sigmoid(np.dot(Wf, concat) + bf)
     it = sigmoid(np.dot(Wi, concat) + bi)
-    ct = np.tanh(np.dot(Wc, concat) + bc)
-    c_next = ft * c_prev + it * ct
+    cct = np.tanh(np.dot(Wc, concat) + bc)
+    c_next = ft * c_prev + it * cct
     ot = sigmoid(np.dot(Wo, concat) + bo)
     a_next = ot * np.tanh(c_next)
     # Compute prediction of the LSTM cell (≈1 line)
     yt_pred = softmax(np.dot(Wy, a_next))
     ### END CODE HERE ###
-    cache = (a_next, c_next, a_prev, c_prev, ft, it, ct, ot, xt, parameters)
+    cache = (a_next, c_next, a_prev, c_prev, ft, it, cct, ot, xt, parameters)
     # store values needed for backward propagation in cache
     return a_next, c_next, yt_pred, cache
 np.random.seed(1)
@@ -294,15 +293,15 @@ def rnn_cell_backward(da_next, cache):
     by = parameters["by"]
     ### START CODE HERE ###
     # compute the gradient of tanh with respect to a_next (≈1 line)
-    dtanh = (1 - np.square(a_next)) * da_next
+    dz = (1 - np.square(a_next)) * da_next
     # compute the gradient of the loss with respect to Wax (≈2 lines)
-    dxt = np.dot(Wax.T, dtanh)
-    dWax = np.dot(dtanh, xt.T)
+    dxt = np.dot(Wax.T, dz)
+    dWax = np.dot(dz, xt.T)
     # compute the gradient with respect to Waa (≈2 lines)
-    da_prev = np.dot(Waa.T, dtanh)
-    dWaa = np.dot(dtanh, a_prev.T)
+    da_prev = np.dot(Waa.T, dz)
+    dWaa = np.dot(dz, a_prev.T)
     # compute the gradient with respect to b (≈1 line)
-    dba = np.sum(dtanh, keepdims=True, axis=-1)
+    dba = np.sum(dz, keepdims=True, axis=-1)
     ### END CODE HERE ###
     # Store the gradients in a python dictionary
     gradients = {"dxt": dxt, "da_prev": da_prev, "dWax": dWax, "dWaa": dWaa, "dba": dba}
@@ -549,7 +548,8 @@ def lstm_backward(da, caches):
     for t in reversed(range(T_x)):
         # Compute all gradients using lstm_cell_backward
         gradients = lstm_cell_backward(da[:, :, t], dc_prevt, caches[t])
-        # da_prevt, dc_prevt = gradients['da_prev'], gradients["dc_prev"]
+        da_prevt = da_prevt + gradients['da_prev']
+        dc_prevt = dc_prevt + gradients["dc_prev"]
         # Store or add the gradient to the parameters' previous step's gradient
         dx[:, :, t] = gradients['dxt']
         dWf = dWf + gradients['dWf']

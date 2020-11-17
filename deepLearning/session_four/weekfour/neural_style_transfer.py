@@ -177,7 +177,9 @@ a_G = out
 J_content = compute_content_cost(a_C, a_G)
 sess.run(model["input"].assign(style_image))
 J_style = compute_style_cost(model, STYLE_LAYERS)
+### START CODE HERE ### (1 line)
 J = total_cost(J_content, J_style, alpha=10, beta=40)
+### END CODE HERE ###
 optimizer = tf.train.AdamOptimizer(2.0)
 train_step = optimizer.minimize(J)
 def model_nn(sess, input_image, num_iterations=200):

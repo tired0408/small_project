@@ -72,7 +72,9 @@ def iou(box1, box2):
     yi1 = np.maximum(box1[1], box2[1])
     xi2 = np.minimum(box1[2], box2[2])
     yi2 = np.minimum(box1[3], box2[3])
-    inter_area = (xi1 - xi2)*(yi1 - yi2)
+    inter_width = np.maximum(xi2 - xi1, 0)
+    inter_height = np.maximum(yi2 - yi1, 0)
+    inter_area = inter_width * inter_height
     ### END CODE HERE ###
     # Calculate the Union area by using Formula: Union(A,B) = A + B - Inter(A,B)
     ### START CODE HERE ### (≈ 3 lines)
